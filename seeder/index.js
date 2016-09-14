@@ -2,15 +2,28 @@ var eventproxy = require('eventproxy');
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var _ = require('lodash');
+var fs = require('fs');
+var path = require('path');
+var moment = require('moment');
 
 var logger = require('../utils/logger');
-var dbConnect = require('../models').dbConnect;
 
 var ep_db = new eventproxy();
 ep_db.fail(function(){	
 	logger.error('seeder error');
 	process.exit(1);
 });
+
+fs.exists(path.resolve(__dirname, 'seeder.lock'), function( exists ){   
+    if(exists){
+    	console.log('已执行过seed,请删除seeder目录下的seeder.lock文件再执行');
+    	process.exit(0);
+    }else{
+    	ep_db.emit('exist');
+    }
+}); 
+
+var dbConnect = require('../models').dbConnect;
 dbConnect.connection.on('open', function(){
     dbConnect.connection.db.dropDatabase(function(err, result){
     	if(err){
@@ -22,7 +35,7 @@ dbConnect.connection.on('open', function(){
     });
 });
 
-ep_db.all('droped', function(){
+ep_db.all('exist', 'droped', function(){
 
 	var User = require('../models').User;
 	var Category = require('../models').Category;
@@ -49,8 +62,12 @@ ep_db.all('droped', function(){
 			var posts = require('./post_data');	
 			var ep_post_each = new eventproxy();			
 			ep_post_each.after('post_seeder', posts.length, function(){
-				logger.info('all seeders success');
-				process.exit(0);
+				logger.info('all seeders success');				
+				var date_str = '执行时间：' + moment().format('YYYY-MM-DD HH:mm:ss');
+				fs.writeFile(path.resolve(__dirname, 'seeder.lock'), date_str, function(err){
+				    console.log('create seeder.lock');
+				    process.exit(0);
+				});					
 			});
 			var tags_len = tags.length;		
 			posts.forEach(function(item){
@@ -104,7 +121,7 @@ ep_db.all('droped', function(){
 			password: hash,
 			email: 'guoxuemeng@qq.com',
 			nickname: 'liukaijv',
-			group:'administrator'
+			group:'visitor'
 		}
 		],function(err,data){
 			console.log('user_seeder')
@@ -140,6 +157,6 @@ ep_db.all('droped', function(){
 			console.log('tag_seeder')
 			ep_tag.emit('tag_seeder');
 		});
-	});			
+	});
 
 })

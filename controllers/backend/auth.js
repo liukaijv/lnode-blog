@@ -17,7 +17,7 @@ exports.login = function(req, res, next){
 		});
 	}	
 	
-	UserModel.findOne({name: username}, function(err, user){
+	UserModel.findOne({name: username}, 'name password group', function(err, user){
 		if(err){
 			return next(err);
 		}
@@ -55,8 +55,7 @@ exports.login = function(req, res, next){
 					req.session.access_token = token;					
 					return res.json({
 						success:true,
-						msg:'登陆成功',
-						access_token: token,
+						msg:'登陆成功',						
 						user:user
 					}); 
 				});

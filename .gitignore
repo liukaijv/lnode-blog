@@ -1,2 +1,4 @@
 node_modules
 npm-debug.log
+seeder/seeder.lock
+logs

@@ -30,7 +30,7 @@ app.use(session({
     secret: config.session_secret, 
     resave: true,
     saveUninitialized: true,   
-    store: new MongoStore({ url: config.db })
+    store: new MongoStore({ url: config.db})
 }));
 
 app.use('/', routes);
