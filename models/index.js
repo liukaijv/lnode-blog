@@ -17,9 +17,11 @@ require('./user');
 require('./category');
 require('./tag');
 require('./post');
+require('./attachment');
 
 exports.dbConnect = dbConnect;
 exports.User = mongoose.model('User');
 exports.Category = mongoose.model('Category');
 exports.Tag = mongoose.model('Tag');
 exports.Post = mongoose.model('Post');
+exports.Attachment = mongoose.model('Attachment');

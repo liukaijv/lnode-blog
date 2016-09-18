@@ -50,14 +50,14 @@ exports.index = function(req, res, next){
 		ep.emit('postCount', {total_page:total_page,count:count});		
 	})
 
-	PostModel.find({}, '-tags', opt).populate('category', 'name').exec(function(err, categories){
-		if(err){
+	PostModel.find({}, '-tags', opt).populate('category', 'name').exec(function(err, posts){
+		if(err || posts.length < 1){
 			return res.json({
 				success: false,
 				msg: '获取文章失败'
 			});
-		}
-		ep.emit('getPosts', categories);		
+		}		
+		ep.emit('getPosts', posts);		
 	})
 }
 
@@ -81,8 +81,8 @@ exports.create = function(req, res, next){
 
 exports.store = function(req, res, next){
 
-	var title = req.body.title && validator.trim(req.body.title);
-	var description = req.body.description && validator.trim(req.body.description);	
+	var title = req.body.title && validator.trim(req.body.title);	
+	var summary = req.body.description && validator.trim(req.body.summary);	
 	var content = req.body.content && validator.trim(req.body.content);	
 	var content_raw = '';	
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
@@ -90,6 +90,7 @@ exports.store = function(req, res, next){
 	var user = req.session.user;
 	var tags = req.body.tags || [];
 	var status = req.body.status && validator.trim(req.body.status);
+	var author = req.body.author && validator.trim(req.body.author);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -133,12 +134,13 @@ exports.store = function(req, res, next){
 		}
 
 		PostModel.create({
-			title:title,
-			description: description,
+			title:title,		
+			summary: summary,
 			content: content,
 			content_raw: content_raw,
 			category: category,
 			user: user,
+			author: author || user.nickname || user.name || '',			
 			tags: tags,
 			status: status,
 			is_hidden: is_hidden,
@@ -212,8 +214,8 @@ exports.update = function(req, res, next){
 			msg: '参数不正确'
 		});
 	}
-	var title = req.body.title && validator.trim(req.body.title);
-	var description = req.body.description && validator.trim(req.body.description);	
+	var title = req.body.title && validator.trim(req.body.title);	
+	var summary = req.body.description && validator.trim(req.body.summary);		
 	var content = req.body.content && validator.trim(req.body.content);	
 	var content_raw = '';	
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
@@ -221,6 +223,7 @@ exports.update = function(req, res, next){
 	var user = req.session.user;
 	var tags = req.body.tags || [];
 	var status = req.body.status && validator.trim(req.body.status);
+	var author = req.body.author && validator.trim(req.body.author);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -258,12 +261,13 @@ exports.update = function(req, res, next){
 	}	
 
 	PostModel.findOneAndUpdate({_id: id}, {
-		title:title,
-		description: description,
+		title:title,		
+		summary: summary,
 		content: content,
 		content_raw: content_raw,
 		category: category,
 		user: user,
+		author: author || user.nickname || user.name || '',	
 		tags: tags,
 		status: status,
 		is_hidden: is_hidden,

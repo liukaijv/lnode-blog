@@ -62,7 +62,7 @@ ep_db.all('exist', 'droped', function(){
 			var posts = require('./post_data');	
 			var ep_post_each = new eventproxy();			
 			ep_post_each.after('post_seeder', posts.length, function(){
-				logger.info('all seeders success');				
+				logger.info('all seeders success');							
 				var date_str = '执行时间：' + moment().format('YYYY-MM-DD HH:mm:ss');
 				fs.writeFile(path.resolve(__dirname, 'seeder.lock'), date_str, function(err){
 				    console.log('create seeder.lock');
@@ -70,17 +70,20 @@ ep_db.all('exist', 'droped', function(){
 				});					
 			});
 			var tags_len = tags.length;		
-			posts.forEach(function(item){
+			posts.forEach(function(item, i){
 				var user = _.shuffle(users)[0];
 				var category = _.shuffle(categroies)[0];									
-				var tags_data = _.take(_.shuffle(tags),Math.floor(Math.random()*tags_len));
+				var tags_data = _.take(_.shuffle(tags),Math.floor(Math.random()*tags_len));	
+				var created_at = moment().subtract(Math.floor(Math.random()*tags_len), 'months')						
 				Post.create({
 					title: item.title,
 					content: item.content,
 					user: user,
+					author: user.nickname || user.name || '',
 					category: category,
-					tags: tags_data						
-				}, function(err, post){						
+					tags: tags_data,
+					created_at: created_at				
+				}, function(err, post){	
 					 	console.log('post_seeder');
 						ep_post_each.emit('post_seeder');					
 				});
@@ -138,7 +141,7 @@ ep_db.all('exist', 'droped', function(){
 	categories.forEach(function(item){
 		Category.create({
 			name: item
-		}, function(err, data){
+		}, function(err, data){			
 			console.log('category_seeder')
 			ep_category.emit('category_seeder');
 		});

@@ -83,7 +83,8 @@ exports.store = function(req, res, next){
 
 	var name = req.body.name && validator.trim(req.body.name);
 	var description = req.body.description && validator.trim(req.body.description);	
-	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);	
+	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);
+	var is_nav = req.body.is_nav && Boolean(req.body.is_nav) || false;		
 
 	var ep = new eventproxy();
 	ep.fail(next);
@@ -111,8 +112,10 @@ exports.store = function(req, res, next){
 
 		CategoryModel.create({
 			name:name,
-			description: description
-		}, function(err, flag){
+			description: description,
+			parent_id: parent_id,
+			is_nav: is_nav
+		}, function(err, category){
 			if(err){
 				return res.json({
 					success: false,
@@ -121,7 +124,8 @@ exports.store = function(req, res, next){
 			}
 			return res.json({
 				success: true,
-				msg: '添加成功'	
+				msg: '添加成功',
+				category: category	
 			});
 		});
 
@@ -180,7 +184,8 @@ exports.update = function(req, res, next){
 	}
 	var name = req.body.name && validator.trim(req.body.name);
 	var description = req.body.description && validator.trim(req.body.description);	
-	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);	
+	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);
+	var is_nav = req.body.is_nav && Boolean(req.body.is_nav) || false;	
 
 	var ep = new eventproxy();
 	ep.fail(next);
@@ -203,8 +208,9 @@ exports.update = function(req, res, next){
 	CategoryModel.findOneAndUpdate({_id: id}, {
 		name: name,
 		description: description,
-		parent_id: parent_id
-	},function(err, flag){
+		parent_id: parent_id,
+		is_nav: is_nav
+	},function(err, category){
 		if(err){
 			return res.json({
 				success: false,
@@ -213,7 +219,8 @@ exports.update = function(req, res, next){
 		}
 		return res.json({
 			success: true,
-			msg: '更新成功'
+			msg: '更新成功',
+			category: category	
 		});
 	});	
 	

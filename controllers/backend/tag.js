@@ -79,15 +79,15 @@ exports.store = function(req, res, next){
 		return ep.emit('invalid', '标签名不能为空');		
 	}	
 
-	TagModel.find({name:name}, function(err, category){
+	TagModel.find({name:name}, function(err, tag){
 
-		if(err || category.length > 0){
+		if(err || tag.length > 0){
 			return ep.emit('invalid', '标签名已存在');	
 		}
 
 		TagModel.create({
 			name:name			
-		}, function(err, flag){
+		}, function(err, tag){
 			if(err){
 				return res.json({
 					success: false,
@@ -96,7 +96,8 @@ exports.store = function(req, res, next){
 			}
 			return res.json({
 				success: true,
-				msg: '添加成功'		
+				msg: '添加成功',
+				tag: tag	
 			});
 		});
 
@@ -153,7 +154,7 @@ exports.update = function(req, res, next){
 
 	TagModel.findOneAndUpdate({_id: id}, {
 		name: name
-	},function(err, flag){
+	},function(err, tag){
 		if(err){
 			return res.json({
 				success: false,
@@ -162,7 +163,8 @@ exports.update = function(req, res, next){
 		}
 		return res.json({
 			success: true,
-			msg: '更新成功'
+			msg: '更新成功',
+			tag: tag
 		});
 	});	
 	
