@@ -17,6 +17,7 @@ var PostSchema = new Schema({
   author: String,
   source: {type: String, default: 'original'}, //original,reprinted,translated  
   status: {type: String, default: 'publish'}, //draft,publish
+  is_markdown: {type: Boolean, default: true },
   is_hidden: {type: Boolean, default: false },
   allow_comment: {type: Boolean, default: true },
   allow_feed: {type: Boolean, default: true }, 

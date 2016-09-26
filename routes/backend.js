@@ -6,9 +6,11 @@ var AuthController = require('../controllers/backend/auth');
 var CategoryController = require('../controllers/backend/category');
 var TagController = require('../controllers/backend/tag');
 var PostController = require('../controllers/backend/post');
+var DashboardController = require('../controllers/backend/dashboard');
 
 router.post('/login', AuthController.login);
 router.post('/logout', AuthController.logout);
+router.get('/dashboard', DashboardController.index);
 
 // category
 router.get('/category', middlewares.admin_required, CategoryController.index);

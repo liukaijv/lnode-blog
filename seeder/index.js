@@ -120,11 +120,11 @@ ep_db.all('exist', 'droped', function(){
 			group:'administrator'
 		},
 		{
-			name:'guoxuemeng',
+			name:'noop',
 			password: hash,
-			email: 'guoxuemeng@qq.com',
-			nickname: 'liukaijv',
-			group:'visitor'
+			email: '89016230@qq.com',
+			nickname: 'noop',
+			group:'administrator'
 		}
 		],function(err,data){
 			console.log('user_seeder')

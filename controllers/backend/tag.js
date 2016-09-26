@@ -1,6 +1,8 @@
 var eventproxy = require('eventproxy');
 var validator = require('validator');
+
 var config = require('../../config');
+var str_slug = require('../../utils').str_slug;
 
 var TagModel = require('../../models').Tag;
 
@@ -49,7 +51,7 @@ exports.index = function(req, res, next){
 		ep.emit('tag_count', {total_page:total_page,count:count});		
 	})
 
-	TagModel.find({}, {}, opt, function(err, tags){
+	TagModel.find({}, {}, opt).exec(function(err, tags){
 		if(err){
 			return res.json({
 				success: false,
@@ -64,6 +66,7 @@ exports.index = function(req, res, next){
 exports.store = function(req, res, next){
 
 	var name = req.body.name && validator.trim(req.body.name);	
+	var slug = req.body.slug && validator.trim(req.body.slug);	
 
 	var ep = new eventproxy();
 	ep.fail(next);
@@ -77,7 +80,9 @@ exports.store = function(req, res, next){
 
 	if(!name || name.length == 0){
 		return ep.emit('invalid', '标签名不能为空');		
-	}	
+	}
+
+	slug = slug ? slug: str_slug(name);	
 
 	TagModel.find({name:name}, function(err, tag){
 
@@ -86,7 +91,8 @@ exports.store = function(req, res, next){
 		}
 
 		TagModel.create({
-			name:name			
+			name:name,			
+			slug:slug		
 		}, function(err, tag){
 			if(err){
 				return res.json({
@@ -137,6 +143,7 @@ exports.update = function(req, res, next){
 		});
 	}
 	var name = req.body.name && validator.trim(req.body.name);	
+	var slug = req.body.slug && validator.trim(req.body.slug);
 
 	var ep = new eventproxy();
 	ep.fail(next);
@@ -150,10 +157,13 @@ exports.update = function(req, res, next){
 
 	if(!name || name.length == 0){
 		return ep.emit('invalid', '分类名不能为空');		
-	}	
+	}
+
+	slug = slug ? slug: str_slug(name);	
 
 	TagModel.findOneAndUpdate({_id: id}, {
-		name: name
+		name: name,
+		slug: slug
 	},function(err, tag){
 		if(err){
 			return res.json({

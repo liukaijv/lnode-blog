@@ -1,6 +1,8 @@
 var eventproxy = require('eventproxy');
 var validator = require('validator');
+
 var config = require('../../config');
+var str_slug = require('../../utils').str_slug;
 
 var CategoryModel = require('../../models').Category;
 
@@ -49,13 +51,13 @@ exports.index = function(req, res, next){
 		ep.emit('categoryCount', {total_page:total_page,count:count});		
 	})
 
-	CategoryModel.find({}, {}, opt, function(err, categories){
+	CategoryModel.find({}, {}, opt).populate('parent', 'name').exec(function(err, categories){
 		if(err){
 			return res.json({
 				success: false,
 				msg: '获取分类失败'
 			});
-		}
+		}		
 		ep.emit('getCategories', categories);		
 	})
 	
@@ -63,7 +65,7 @@ exports.index = function(req, res, next){
 
 exports.create = function(req, res, next){
 
-	CategoryModel.find({}, '_id name', function(err, categories){
+	CategoryModel.find({parent: null}, function(err, categories){
 		if(err){
 			return res.json({
 				success: false,
@@ -82,8 +84,9 @@ exports.create = function(req, res, next){
 exports.store = function(req, res, next){
 
 	var name = req.body.name && validator.trim(req.body.name);
+	var slug = req.body.slug && validator.trim(req.body.slug);	
 	var description = req.body.description && validator.trim(req.body.description);	
-	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);
+	var parent = req.body.parent && validator.trim(req.body.parent);
 	var is_nav = req.body.is_nav && Boolean(req.body.is_nav) || false;		
 
 	var ep = new eventproxy();
@@ -100,9 +103,11 @@ exports.store = function(req, res, next){
 		return ep.emit('invalid', '分类名不能为空');		
 	}
 
-	if(parent_id && !validator.isMongoId(parent_id)){
+	if(parent && !validator.isMongoId(parent)){
 		return ep.emit('invalid', '父级分类不正确');
 	}
+
+	slug = slug ? slug : str_slug(name);
 
 	CategoryModel.find({name:name}, function(err, category){
 
@@ -112,8 +117,9 @@ exports.store = function(req, res, next){
 
 		CategoryModel.create({
 			name:name,
+			slug:slug,
 			description: description,
-			parent_id: parent_id,
+			parent: parent?parent:null,
 			is_nav: is_nav
 		}, function(err, category){
 			if(err){
@@ -163,7 +169,7 @@ exports.edit = function(req, res, next){
 		ep.emit('category', category)
 	});
 
-	CategoryModel.find({_id: {$ne: id}}, '_id name' ,function(err, categories){
+	CategoryModel.find({_id: {$ne: id}, parent: null},function(err, categories){
 		if(err){
 			return res.json({
 				success: false,
@@ -183,8 +189,9 @@ exports.update = function(req, res, next){
 		});
 	}
 	var name = req.body.name && validator.trim(req.body.name);
+	var slug = req.body.slug && validator.trim(req.body.slug);	
 	var description = req.body.description && validator.trim(req.body.description);	
-	var parent_id = req.body.parent_id && validator.trim(req.body.parent_id);
+	var parent = req.body.parent && validator.trim(req.body.parent);
 	var is_nav = req.body.is_nav && Boolean(req.body.is_nav) || false;	
 
 	var ep = new eventproxy();
@@ -201,20 +208,24 @@ exports.update = function(req, res, next){
 		return ep.emit('invalid', '分类名不能为空');		
 	}
 
-	if(parent_id && !validator.isMongoId(parent_id)){
+	if(parent && !validator.isMongoId(parent)){
 		return ep.emit('invalid', '父级分类不正确');
 	}
 
+	slug = slug ? slug : str_slug(name);
+
 	CategoryModel.findOneAndUpdate({_id: id}, {
 		name: name,
+		slug: slug,
 		description: description,
-		parent_id: parent_id,
+		parent: parent ? parent: null,
 		is_nav: is_nav
 	},function(err, category){
 		if(err){
 			return res.json({
 				success: false,
-				msg: '更新失败'
+				msg: '更新失败',
+				err: err
 			});
 		}
 		return res.json({

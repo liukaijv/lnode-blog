@@ -1,10 +1,14 @@
 var eventproxy = require('eventproxy');
 var validator = require('validator');
 var MarkdownIt = require('markdown-it');
+var _ = require('lodash');
+
 var config = require('../../config');
+var str_slug = require('../../utils').str_slug;
 
 var PostModel = require('../../models').Post;
 var TagModel = require('../../models').Tag;
+var CategoryModel = require('../../models').Category;
 
 exports.index = function(req, res, next){
 
@@ -50,8 +54,8 @@ exports.index = function(req, res, next){
 		ep.emit('postCount', {total_page:total_page,count:count});		
 	})
 
-	PostModel.find({}, '-tags', opt).populate('category', 'name').exec(function(err, posts){
-		if(err || posts.length < 1){
+	PostModel.find({}, {}, opt).populate('category tags').exec(function(err, posts){
+		if(err){
 			return res.json({
 				success: false,
 				msg: '获取文章失败'
@@ -63,6 +67,28 @@ exports.index = function(req, res, next){
 
 exports.create = function(req, res, next){
 
+	var ep = new eventproxy();
+	ep.fail(next);
+
+	ep.all('getCategories', 'getTags', function(categories, tags){
+		return res.json({
+			success: true,
+			msg: '获取数据成功',
+			categories: categories,
+			tags: tags			
+		});
+	})
+
+	CategoryModel.find({}, '_id name', function(err, categories){
+		if(err){
+			return res.json({
+				success: false,
+				msg: '获取分类失败'
+			});
+		}
+		ep.emit('getCategories', categories);		
+	})
+
 	TagModel.find({}, '_id name', function(err, tags){
 		if(err){
 			return res.json({
@@ -70,11 +96,7 @@ exports.create = function(req, res, next){
 				msg: '获取标签失败'
 			});
 		}
-		return res.json({
-			success: true,
-			msg: '获取标签成功',
-			tags: tags			
-		});
+		ep.emit('getTags', tags);	
 	})
 
 }
@@ -82,9 +104,10 @@ exports.create = function(req, res, next){
 exports.store = function(req, res, next){
 
 	var title = req.body.title && validator.trim(req.body.title);	
+	var slug = req.body.slug && validator.trim(req.body.slug);	
 	var summary = req.body.description && validator.trim(req.body.summary);	
 	var content = req.body.content && validator.trim(req.body.content);	
-	var content_raw = '';	
+	var content_raw = req.body.content_raw && validator.trim(req.body.content_raw);	
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
 	var category = req.body.category && validator.trim(req.body.category);
 	var user = req.session.user;
@@ -117,15 +140,19 @@ exports.store = function(req, res, next){
 		return ep.emit('invalid', '父级分类不正确');
 	}
 
-	if(!content || content.length == 0){
+	if((!content || content.length == 0) && (!content_raw || content_raw.length == 0)){
 		return ep.emit('invalid', '文章内容不能为空');		
 	}
 
 	if(is_markdown){
-		var md = new MarkdownIt();
-		content_raw = content;
-		content = md.render(content);		
-	}	
+		var md = new MarkdownIt();		
+		content = md.render(content_raw);		
+	}
+
+	
+	slug = slug ? slug : str_slug(title);
+	tags = _.compact(tags);
+	author = author ? author : user ? user.nickname : 'admin';
 
 	PostModel.find({title: title}, function(err, post){
 
@@ -135,15 +162,17 @@ exports.store = function(req, res, next){
 
 		PostModel.create({
 			title:title,		
+			slug:slug,		
 			summary: summary,
 			content: content,
 			content_raw: content_raw,
 			category: category,
 			user: user,
-			author: author || user.nickname || user.name || '',			
+			author: author,		
 			tags: tags,
 			status: status,
 			is_hidden: is_hidden,
+			is_markdown: is_markdown,
 			allow_comment: allow_comment,
 			allow_feed: allow_feed
 		}, function(err, post){			
@@ -175,10 +204,11 @@ exports.edit = function(req, res, next){
 	var ep = new eventproxy();
 	ep.fail(next);
 
-	ep.all('post', 'tags', function(post, tags){
+	ep.all('post', 'categories', 'tags', function(post, categories, tags){
 		return res.json({
 			success: true,
 			msg: '获取文章成功',
+			categories: categories,		
 			tags: tags,		
 			post: post
 		});
@@ -193,6 +223,16 @@ exports.edit = function(req, res, next){
 		}	
 		ep.emit('post', post)
 	});
+
+	CategoryModel.find({}, '_id name', function(err, categories){
+		if(err){
+			return res.json({
+				success: false,
+				msg: '获取分类失败'
+			});
+		}
+		ep.emit('categories', categories);		
+	})
 
 	TagModel.find({_id: {$ne: id}}, 'name', function(err, tags){
 		if(err){
@@ -215,9 +255,10 @@ exports.update = function(req, res, next){
 		});
 	}
 	var title = req.body.title && validator.trim(req.body.title);	
+	var slug = req.body.slug && validator.trim(req.body.slug);	
 	var summary = req.body.description && validator.trim(req.body.summary);		
 	var content = req.body.content && validator.trim(req.body.content);	
-	var content_raw = '';	
+	var content_raw = req.body.content_raw && validator.trim(req.body.content_raw);		
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
 	var category = req.body.category && validator.trim(req.body.category);
 	var user = req.session.user;
@@ -250,18 +291,20 @@ exports.update = function(req, res, next){
 		return ep.emit('invalid', '父级分类不正确');
 	}
 
-	if(!content || content.length == 0){
+	if((!content || content.length == 0) && (!content_raw || content_raw.length == 0)){
 		return ep.emit('invalid', '文章内容不能为空');		
 	}
 
 	if(is_markdown){
-		var md = new MarkdownIt();
-		content_raw = content;
-		content = md.render(content);		
-	}	
+		var md = new MarkdownIt();		
+		content = md.render(content_raw);		
+	}
+
+	slug = slug ? slug : str_slug(title);	
 
 	PostModel.findOneAndUpdate({_id: id}, {
 		title:title,		
+		slug: slug,
 		summary: summary,
 		content: content,
 		content_raw: content_raw,
@@ -271,6 +314,7 @@ exports.update = function(req, res, next){
 		tags: tags,
 		status: status,
 		is_hidden: is_hidden,
+		is_markdown: is_markdown,
 		allow_comment: allow_comment,
 		allow_feed: allow_feed
 	},function(err, post){

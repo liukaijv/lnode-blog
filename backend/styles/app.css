@@ -1,0 +1,15 @@
+.login-page{
+	position: fixed;
+	top:0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+html,body,#app{
+	height: 100%;
+	min-height: 100%;
+}
+.wrapper{
+	background: #ecf0f5!important;
+}

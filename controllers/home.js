@@ -70,8 +70,8 @@ exports.post = function(req, res ,next){
 // 文章显示
 exports.postShow = function(req, res, next){
 
-	var id = req.params.id;
-	if(!id){
+	var slug = req.params.slug;
+	if(!slug){
 		return res.json({
 			success: false,
 			msg: '参数不正确'
@@ -116,7 +116,7 @@ exports.postShow = function(req, res, next){
 		
 	});
 
-	PostModel.findOne({_id: id}).populate('category tags').exec(function(err, post){
+	PostModel.findOne({slug: slug}).populate('category tags').exec(function(err, post){
 		if(err || !post){
 			return res.json({
 				success: false,
@@ -139,7 +139,13 @@ exports.category = function(req, res, next){
 
 // 分类文章
 exports.categoryShow = function(req, res, next){
-	
+	var slug = req.params.slug;
+	if(!slug){
+		return res.json({
+			success: false,
+			msg: '参数不正确'
+		});
+	}
 }
 
 // 所有标签
@@ -149,7 +155,13 @@ exports.tag = function(req, res, next){
 
 // 标签文章
 exports.tagShow = function(req, res, next){
-	
+	var slug = req.params.slug;
+	if(!slug){
+		return res.json({
+			success: false,
+			msg: '参数不正确'
+		});
+	}
 }
 
 // 文章归档
