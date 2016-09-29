@@ -1,19 +1,15 @@
 // routes
 
 export default function routeConfig(router) {
-  router.map({       
-   '/login': {
-    name: 'login',
-    component: (resolve)=>{require(['./views/login'],resolve)}
-  },
-  '/main': {
-    name: 'main',
-    component: (resolve)=>{require(['./views/layout'],resolve)},
-    subRoutes: {
-      '/dashboard': {
-        name: 'dashboard',
-        component: (resolve)=>{require(['./views/dashboard'],resolve)}
-      },
+  router.map({  
+    '/': {
+      name: 'main',
+      component: (resolve)=>{require(['./views/layout'],resolve)},
+      subRoutes: {       
+        '/dashboard': {
+          name: 'dashboard',
+          component: (resolve)=>{require(['./views/dashboard'],resolve)}
+        },
       // category
       '/category/index': {
         name: 'category_index',
@@ -52,14 +48,22 @@ export default function routeConfig(router) {
       '/post/:post_id/edit': {
         name: 'post_edit',
         component: (resolve)=>{require(['./views/post/edit'],resolve)}
-      }
+      },
+      // user
+      '/user/:user_id/edit': {
+        name: 'user_edit',
+        component: (resolve)=>{require(['./views/user/edit'],resolve)}
+      },
     }
+  },
+  '/login': {
+    name: 'login',
+    component: (resolve)=>{require(['./views/login'],resolve)}
   },
 });
 
-  router.redirect({
-    '*': '/login',       
-    '/main': '/main/dashboard',       
+  router.redirect({     
+    '/': '/dashboard'      
   });
 
 }

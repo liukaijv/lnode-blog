@@ -6,6 +6,11 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title">分类列表</h3>
+							<div class="pull-right box-tools">
+								<a class="btn btn-primary btn-sm" v-link="{name:'category_create'}">
+									<i class="fa fa-plus"></i>
+								</a>
+							</div>
 						</div>
 						<div class="box-body">
 							<table class="table table-hover" v-if="categories.length">

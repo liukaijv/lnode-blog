@@ -7,10 +7,14 @@ var CategoryController = require('../controllers/backend/category');
 var TagController = require('../controllers/backend/tag');
 var PostController = require('../controllers/backend/post');
 var DashboardController = require('../controllers/backend/dashboard');
+var UserController = require('../controllers/backend/user');
+var CommonController = require('../controllers/common');
 
 router.post('/login', AuthController.login);
 router.post('/logout', AuthController.logout);
 router.get('/dashboard', DashboardController.index);
+
+router.post('/upload', CommonController.upload);
 
 // category
 router.get('/category', middlewares.admin_required, CategoryController.index);
@@ -37,5 +41,9 @@ router.get('/post/:id/edit', middlewares.admin_required, PostController.edit);
 router.put('/post/:id/edit', middlewares.admin_required, PostController.update);
 router.delete('/post/:id', middlewares.admin_required, PostController.delete);
 router.post('/post/delete', middlewares.admin_required, PostController.deleteBatch);
+
+// user
+router.get('/user/:id/edit', middlewares.admin_required, UserController.edit);
+router.put('/user/:id/edit', middlewares.admin_required, UserController.update);
 
 module.exports = router;

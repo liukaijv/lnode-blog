@@ -8,11 +8,12 @@ import {
 	LOGIN,
 	LOGOUT,
 	AUTHORIZED,
+	USER_UPDATE,
 	ALERT,
 	ALERT_HIDE,
 	CONFIRM_SHOW,
 	CONFIRM_HIDE,
-	PAGE_CHANGE	
+	PAGE_CHANGE
 } from './mutation-types';
 
 // mutations
@@ -20,12 +21,16 @@ import dashboard from './mutations/dashboard';
 import category from './mutations/category';
 import tag from './mutations/tag';
 import post from './mutations/post';
+import user from './mutations/user';
+import file from './mutations/file';
 
 const debug = process.env.NODE_ENV !== 'production'
 
-const state = {	
-	user: {
-		name:''
+const state = {		
+	auth: {
+		_id: '',
+		name:'',
+		email: ''
 	},
 	alert: {
 		type: 'info',
@@ -45,17 +50,25 @@ const store = new Vuex.Store({
 	state,
 	mutations: {
 		[LOGIN] (state, user){
-			state.user = user;
+			state.auth = user;
 		},
 		[LOGOUT] (state){
-			state.user = {
-				name:''
+			state.auth = {
+				_id: '',
+				name:'',
+				email: ''
 			};
 		},
-		[AUTHORIZED] (state, user){			
-			state.user = user ? user : {
-				name:''
-			};
+		[AUTHORIZED] (state, user){
+			if(!user){
+				state.auth = {
+					_id: '',
+					name:'',
+					email: ''
+				};
+			}else{
+				state.auth = user;
+			}
 		},
 		[ALERT] (state, info){
 			state.alert = info;
@@ -92,7 +105,9 @@ const store = new Vuex.Store({
 		dashboard,
 		category,
 		tag,
-		post
+		post,
+		user,
+		file
 	},
 	// strict: debug,
 	plugins

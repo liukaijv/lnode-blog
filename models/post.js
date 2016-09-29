@@ -27,5 +27,5 @@ var PostSchema = new Schema({
   updated_at: {type: Date, default: Date.now }
 });
 
-// PostSchema.plugin(relationship, {relationshipPathName: 'tags'})
+PostSchema.plugin(relationship, {relationshipPathName: 'tags'})
 mongoose.model('Post',PostSchema)

@@ -6,14 +6,17 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title">标签新增</h3>
+							<div class="pull-right box-tools">
+								<a class="btn btn-default" v-link="{name:'tag_index'}">返回</a>
+							</div>
 						</div>
 						<div class="box-body">
 							<div class="form-group">								
 								<input type="text" placeholder="标签名称" class="form-control" v-model="entity.name">
 							</div>
-							<!-- <div class="form-group">								
+							<div class="form-group">								
 								<input type="text" placeholder="Slug" class="form-control" v-model="entity.slug">
-							</div>		 -->					
+							</div>							
 						</div>
 						<div class="box-footer clearfix">
 							<button class="btn btn-primary" type="button" @click="storeData">提交</button>

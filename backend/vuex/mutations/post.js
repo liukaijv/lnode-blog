@@ -5,7 +5,10 @@ import {
 	POST_EDIT,
 	POST_UPDATE,
 	POST_DELETE,
-	POST_TAGS
+	POST_TAGS,
+	POST_UPLOAD_COVER,
+	POST_CANCEL_COVER,
+	POST_EDITOR
 } from '../mutation-types';
 
 const state = {	
@@ -18,6 +21,7 @@ const state = {
 		category: '',
 		tags: [],
 		author: '',
+		cover_image: '',
 		summary: '',
 		content: '',
 		content_raw: '',
@@ -41,6 +45,7 @@ const mutations = {
 				category: '',
 				tags: [],
 				author: '',
+				cover_image: '',
 				summary: '',
 				content: '',
 				content_raw: '',
@@ -60,6 +65,7 @@ const mutations = {
 			tags: post.tags?post.tags:[],
 			author: post.author,
 			summary: post.summary,
+			cover_image: post.cover_image || '',
 			content: post.content,
 			content_raw: post.content_raw,
 			is_markdown: post.is_markdown,
@@ -73,6 +79,15 @@ const mutations = {
 	},
 	[POST_DELETE] (state) {
 		
+	},
+	[POST_UPLOAD_COVER](state, url){
+		state.entity.cover_image = url;
+	},
+	[POST_CANCEL_COVER](state){
+		state.entity.cover_image = '';
+	},
+	[POST_EDITOR](state, text){
+		state.entity.content_raw = text;
 	}
 }
 

@@ -5,10 +5,14 @@ import {
 	POST_STORE,
 	POST_EDIT,
 	POST_UPDATE,
-	POST_DELETE
+	POST_DELETE,
+	POST_UPLOAD_COVER,
+	POST_CANCEL_COVER,
+	POST_EDITOR
 } from '../mutation-types';
 
 import http from '../../api/http';
+import {uploadAction} from './common';
 
 export const indexAction = function(store, page=1) {
 
@@ -39,7 +43,7 @@ export const storeAction = function(store, data){
 		var data = result.data;
 		if(data.success == true){
 			store.dispatch('POST_STORE');
-			store.router.go('/main/post/index');	
+			store.router.go('/post/index');	
 		}else{
 			store.dispatch('ALERT', {type: 'danger', msg: data.msg});
 		}
@@ -70,7 +74,7 @@ export const updateAction = function(store, data){
 		let data = result.data;
 		if(data.success == true){
 			store.dispatch('POST_UPDATE');
-			store.router.go('/main/post/index');			
+			store.router.go('/post/index');			
 		}else{
 			store.dispatch('ALERT', {type: 'danger', msg: data.msg});
 		}
@@ -90,4 +94,22 @@ export const deleteAction = function(store, id){
 			}
 		});	
 	});
+}
+
+export const uploadCoverAction = function(store, files){	
+	if (files.length > 0) {        
+        uploadAction(files[0]).then(function(result){
+        	store.dispatch(POST_UPLOAD_COVER, result.url);
+        });         
+    } else {  
+        store.dispatch('ALERT', {type: 'danger', msg: '没有选择文件'});
+    }
+}
+
+export const cancelCoverAction = function(store, files){	
+    store.dispatch(POST_CANCEL_COVER);
+}
+
+export const editorAction = function(store, text){	
+    store.dispatch(POST_EDITOR, text);
 }

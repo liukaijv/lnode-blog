@@ -1,7 +1,8 @@
 import { 
 	LOGIN,
 	LOGOUT,
-	AUTHORIZED
+	AUTHORIZED,
+	USER_UPDATE
 } from '../mutation-types';
 
 import http from '../../api/http';
@@ -13,7 +14,7 @@ export const loginAction = function(store, data){
 			sessionStorage.setItem('jwt_token', data.user.access_token);	
 			sessionStorage.setItem('auth_user', JSON.stringify(data.user));	
 			store.dispatch(LOGIN, data.user);	
-			store.router.go('/main');			
+			store.router.go('/dashboard');			
 		}else{
 			store.dispatch('ALERT', {type:'danger', msg: data.msg});
 		}
@@ -38,9 +39,22 @@ export const authorizedAction = function(store){
 	var jwt_token = sessionStorage.getItem('jwt_token');	
 	if(session_user){
 		auth_user = JSON.parse(session_user)
-	}
+	}	
 	store.dispatch(AUTHORIZED, auth_user);
 	if(!auth_user || !jwt_token){
 		store.router.go('/login');		
 	}
+}
+
+export const updateAction = function(store, data){
+	http.post('profile', data).then(function(result){
+		var data = result.data;
+		if(data.success == true){
+			sessionStorage.setItem('auth_user', JSON.stringify(data.user));
+			store.dispatch('USER_UPDATE');		
+			store.dispatch('ALERT', {type:'info', msg: data.msg});		
+		}else{
+			store.dispatch('ALERT', {type:'danger', msg: data.msg});
+		}
+	});
 }

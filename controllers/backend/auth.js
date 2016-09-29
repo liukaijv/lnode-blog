@@ -17,7 +17,7 @@ exports.login = function(req, res, next){
 		});
 	}	
 	
-	UserModel.findOne({name: username}, 'name password group nickname', function(err, user){
+	UserModel.findOne({name: username}, {}, function(err, user){
 		if(err){
 			return next(err);
 		}

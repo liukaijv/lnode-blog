@@ -18,9 +18,9 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="user user-menu">
-                        <a>
+                        <a v-link="{name:'user_edit', params:{user_id: user._id}}">
                             <!-- <img alt="" class="user-image" src="http://lorempixel.com/100/100/?83316"> -->
-                            <span class="hidden-xs">{{user.name}}</span>
+                            <span class="hidden-xs">{{user.nickname}}</span>
                         </a>
                     </li>
                     <li>
@@ -67,7 +67,7 @@ export default {
             hideConfirm	
 		},
 		getters: {
-			user: state => state.user,
+			user: state => state.auth,
 			alert: state => state.alert,			
 		}
 	},

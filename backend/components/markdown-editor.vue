@@ -10,12 +10,12 @@
 		<div class="clearfix">
 			<div class="btn-toolbar pull-left" v-show="!showPreview">
 				<div class="btn-group">	
-					<!-- <button class="btn" title="标题一" @click="h(1)"><strong>H1</strong></button> -->
+					<button class="btn" title="标题一" @click="h(1)"><strong>H1</strong></button>
 					<button class="btn" title="标题二" @click="h(2)"><strong>H2</strong></button>
 					<button class="btn" title="标题三" @click="h(3)"><strong>H3</strong></button>
-					<!-- <button class="btn" alt="标题四" @click="h(4)"><strong>H4</strong></button>
+					<button class="btn" title="标题四" @click="h(4)"><strong>H4</strong></button>
 					<button class="btn" title="标题五" @click="h(5)"><strong>H5</strong></button>
-					<button class="btn" title="标题六" @click="h(6)"><strong>H6</strong></button> -->
+					<button class="btn" title="标题六" @click="h(6)"><strong>H6</strong></button>
 				</div>
 				<div class="btn-group">
 					<button class="btn" title="加粗" @click="wrap('**')">
@@ -56,16 +56,17 @@
 				文章预览
 			</h4>			
 			<div class="pull-right">
-				<div class="btn-group">
-					<button class="btn" title="preview" @click="preview">
-						<span v-if="showPreview"><i class="fa fa-pencil"></i> 编辑</span>						
-						<span v-else><i class="fa fa-eye"></i> 预览</span>						
-					</button>
-				</div>
+				<button class="btn" title="upload">												
+					<span><i class="fa fa-upload"></i> 本地文档</span>						
+				</button>	
+				<button class="btn" title="preview" @click="preview">
+					<span v-if="showPreview"><i class="fa fa-pencil"></i> 编辑</span>						
+					<span v-else><i class="fa fa-eye"></i> 预览</span>						
+				</button>
 			</div>
 		</div>
 		<div class="form-group">
-			<div id="markdown-preview" v-if="showPreview">{{{content?content:'没有内容'}}}</div>									
+			<div id="markdown-preview" v-if="showPreview">{{{content?content:'无可预览内容'}}}</div>									
 			<textarea class="form-control" id="markdown-textarea" style="height:400px;" placeholder="文章内容" v-model="contentRaw" v-else></textarea>						
 		</div>	
 	</div>
@@ -78,9 +79,9 @@
 
 	export default {
 		props:{
-			contentRaw: {
-				required: true,
-				type: String
+			contentRaw: {				
+				type: String,
+				default: ''
 			},
 			content: {				
 				type: String,

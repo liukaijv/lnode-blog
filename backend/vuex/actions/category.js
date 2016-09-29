@@ -38,7 +38,7 @@ export const storeAction = function(store, data){
 		var data = result.data;
 		if(data.success == true){
 			store.dispatch('CATEGORY_STORE');
-			store.router.go('/main/category/index');	
+			store.router.go('/category/index');	
 		}else{
 			store.dispatch('ALERT', {type: 'danger', msg: data.msg});
 		}
@@ -69,7 +69,7 @@ export const updateAction = function(store, data){
 		var data = result.data;
 		if(data.success == true){
 			store.dispatch('CATEGORY_UPDATE');
-			store.router.go('/main/category/index');			
+			store.router.go('/category/index');			
 		}else{
 			store.dispatch('ALERT', {type: 'danger', msg: data.msg});
 		}

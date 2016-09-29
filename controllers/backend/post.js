@@ -114,6 +114,7 @@ exports.store = function(req, res, next){
 	var tags = req.body.tags || [];
 	var status = req.body.status && validator.trim(req.body.status);
 	var author = req.body.author && validator.trim(req.body.author);
+	var cover_image = req.body.cover_image && validator.trim(req.body.cover_image);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -169,6 +170,7 @@ exports.store = function(req, res, next){
 			category: category,
 			user: user,
 			author: author,		
+			cover_image: cover_image,		
 			tags: tags,
 			status: status,
 			is_hidden: is_hidden,
@@ -265,6 +267,7 @@ exports.update = function(req, res, next){
 	var tags = req.body.tags || [];
 	var status = req.body.status && validator.trim(req.body.status);
 	var author = req.body.author && validator.trim(req.body.author);
+	var cover_image = req.body.cover_image && validator.trim(req.body.cover_image);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -311,6 +314,7 @@ exports.update = function(req, res, next){
 		category: category,
 		user: user,
 		author: author || user.nickname || user.name || '',	
+		cover_image: cover_image,	
 		tags: tags,
 		status: status,
 		is_hidden: is_hidden,

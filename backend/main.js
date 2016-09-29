@@ -14,8 +14,15 @@ import './styles/app.css';
 //js
 import './assets/js/bootstrap.js';
 
+//directives
+import select2 from './directives/select2';
+Vue.directive('select', select2);
+
+//filters
 import date_format from './filters/date_format';
+import sub_str from './filters/sub_str';
 Vue.filter('date_format', date_format);
+Vue.filter('sub_str', sub_str);
 
 import store from './vuex/store';
 import routeConfig from './routes';

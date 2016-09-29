@@ -3,3 +3,5 @@
 [2016-09-26 13:04:55.048] [INFO] cheese - all seeders success
 [2016-09-26 17:01:57.664] [ERROR] cheese - connect to mongodb://localhost:27017/lnode-blog error:  failed to connect to server [localhost:27017] on first connect
 [2016-09-26 17:04:12.539] [ERROR] cheese - connect to mongodb://localhost:27017/lnode-blog error:  failed to connect to server [localhost:27017] on first connect
+[2016-09-27 15:33:29.302] [INFO] cheese - all seeders success
+[2016-09-28 21:32:14.293] [INFO] cheese - all seeders success

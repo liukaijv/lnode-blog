@@ -6,18 +6,24 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title">文章新增</h3>
+							<div class="pull-right box-tools">
+								<a class="btn btn-default" v-link="{name:'post_index'}">返回</a>
+							</div>
 						</div>
 						<div class="box-body row">
-							<div class="col-md-10">
+							<div class="col-md-9">
 								<div class="form-group">									
 									<input type="text" placeholder="标题" class="form-control" v-model="entity.title">
-								</div>	
+								</div>									
 								<!-- <div class="form-group">									
 									<textarea class="form-control"  placeholder="摘要" v-model="entity.summary"></textarea>	
-								</div>	 -->
-								<markdown-editor :content-raw.sync="entity.content_raw"></markdown-editor>																
+								</div>	 -->							
+								<Simplemde :text="entity.content_raw" :action="editorAction"></Simplemde>
 							</div>
-							<div class="col-md-2">													
+							<div class="col-md-3">	
+								<div class="form-group">									
+									<input type="text" placeholder="Slug" class="form-control" v-model="entity.slug">
+								</div>													
 								<div class="form-group">									
 									<select class="form-control" v-model="entity.category">		
 										<option value="">选择分类</option>							
@@ -32,15 +38,17 @@
 								</div>
 								<div class="form-group">									
 									<input type="text" placeholder="作者" class="form-control" v-model="entity.author">
+								</div>								
+								<div class="form-group">									
+									<upload :action="uploadCoverAction"></upload>
+									<img :src="entity.cover_image" width="80" v-if="entity.cover_image" @click="cancelCoverAction">
 								</div>
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" v-model="entity.is_hidden"> 是否显示
 									</label>
 								</div>
-								<!-- <div class="form-group">									
-									<input type="text" placeholder="Slug" class="form-control" v-model="entity.slug">
-								</div>	
+								<!-- 
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" v-model="entity.is_markdown"> 是否为markdown
@@ -60,8 +68,9 @@
 
 <script>
 
-	import {createAction, storeAction} from '../../vuex/actions/post';	
-	import MarkdownEditor from '../../components/markdown-editor';
+	import {createAction, storeAction, uploadCoverAction, cancelCoverAction, editorAction} from '../../vuex/actions/post';		
+	import Simplemde from '../../components/simplemde';
+	import Upload from '../../components/upload';
 
 	export default {
 		ready(){
@@ -70,7 +79,10 @@
 		vuex: {
 			actions: {
 				createAction,
-				storeAction							
+				storeAction,
+				uploadCoverAction,
+				cancelCoverAction,
+				editorAction						
 			},
 			getters: {					
 				entity: ({post}) => post.entity,			
@@ -78,8 +90,9 @@
 				tags: ({post}) => post.tags,			
 			}
 		},	
-		components: {
-			MarkdownEditor
+		components: {		
+			Simplemde,
+			Upload		
 		},	
 		methods: {
 			storeData(){				

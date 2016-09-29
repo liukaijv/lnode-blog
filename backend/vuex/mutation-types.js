@@ -39,3 +39,14 @@ export const POST_STORE = 'POST_STORE';
 export const POST_EDIT = 'POST_EDIT';
 export const POST_UPDATE = 'POST_UPDATE';
 export const POST_DELETE = 'POST_DELETE';
+export const POST_UPLOAD_COVER = 'POST_UPLOAD_COVER';
+export const POST_CANCEL_COVER = 'POST_CANCEL_COVER';
+export const POST_EDITOR = 'POST_EDITOR';
+
+// user
+export const USER_INDEX = 'USER_INDEX';
+export const USER_CREATE = 'USER_STORE';
+export const USER_STORE = 'USER_STORE';
+export const USER_EDIT = 'USER_EDIT';
+export const USER_UPDATE = 'USER_UPDATE';
+export const USER_DELETE = 'USER_DELETE';

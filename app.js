@@ -1,3 +1,5 @@
+var config = require('./config');
+
 // app
 var express = require('express');
 var path = require('path');
@@ -5,6 +7,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
+var bytes = require('bytes');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var swig = require('swig');
@@ -26,6 +30,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(busboy({
+  limits: {
+    fileSize: bytes(config.file_limit)
+  }
+}));
 
 app.use(session({
     secret: config.session_secret, 

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const deepClone = function (obj) {
   if (Array.isArray(obj)) {
     return obj.map(deepClone)
@@ -13,3 +15,23 @@ export const deepClone = function (obj) {
     return obj
   }
 }
+
+export const options = function(string){
+  if (_.isPlainObject(string)) {
+    return string;
+  }        
+  var start = (string ? string.indexOf('{') : -1);
+  var options = {};
+
+  if (start != -1) {
+    try {
+      options = (new Function('',
+        'var json = ' + string.substr(start) +
+        '; return JSON.parse(JSON.stringify(json));'))();
+      } catch (e) {
+        console.log('parse options error')
+      }
+    }
+
+    return options;
+  }

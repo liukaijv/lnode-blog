@@ -6,6 +6,11 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title">文章列表</h3>
+							<div class="pull-right box-tools">
+								<a class="btn btn-primary btn-sm" v-link="{name:'post_create'}">
+									<i class="fa fa-plus"></i>
+								</a>
+							</div>
 						</div>
 						<div class="box-body">
 							<table class="table table-hover" v-if="posts.length">
@@ -20,7 +25,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="item in posts">
-										<td>{{item.title}}</td>	
+										<td>{{item.title | sub_str 40 true}}</td>	
 										<td>{{item.category?item.category.name:'无'}}</td>
 										<td>
 											<span class="text-primary" v-if="item.is_hidden">是</span>
