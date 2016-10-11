@@ -1,0 +1,61 @@
+.table-row {
+  @include table-row();
+}
+
+.flex-row {
+  @include flexbox();
+}
+
+.flex {
+  @include flex();
+}
+
+.flex-horizontal {
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+}
+
+.flex-vertical {
+  @include flex-direction(column);
+  @include flex-wrap(wrap);
+}
+
+.flex-start {
+  @include justify-content(flex-start);
+}
+
+.flex-center {
+  @include justify-content(center);
+}
+
+.flex-end {
+  @include justify-content(flex-end);
+}
+
+.flex-top {
+  @include align-items(flex-start);
+}
+
+.flex-middle {
+  @include align-items(center);
+}
+
+.flex-bottom {
+  @include align-items(flex-end);
+}
+
+.flex-around {
+  @include justify-content(space-around);
+}
+
+.flex-between {
+  @include justify-content(space-between);
+}
+
+.flex-first {
+  @include order(-1);
+}
+
+.flex-last {
+  @include order(40);
+}

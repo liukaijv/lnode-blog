@@ -19,10 +19,10 @@ var config = {
 		accessKey: '0mGOTinIiIvQZJFNRwmR_ibnj3LijxYEiedddXOe',
     	secretKey: 'hJ4XsEo48BinnZK7IIfOSIJuVDYVsCgQ4IxjQwy_',
 		bucket: 'blog',
-		origin: 'http://blog.u.qiniudn.com'    	
+		origin: 'http://oe747l4go.bkt.clouddn.com'    	
 	},
   	
-  	// 注：如果填写 qn_access，则会上传到 7牛，以下配置无效
+  	// 优先使用qn
   	upload: {
   		path: path.join(__dirname, 'public/upload/'),
   		url: '/public/upload/'

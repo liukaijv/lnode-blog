@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let instance = axios.create({
-	baseURL: '/api'
+	baseURL: '/backend'
 });
 
 instance.interceptors.request.use(function (config) {
@@ -11,8 +11,7 @@ instance.interceptors.request.use(function (config) {
 	}		
 	return config;
 }, function (error) {	
-	console.log(error)
-	window.href = 'http://localhost:8080/';
+	console.log(error)	
 	return Promise.reject(error);
 });
 
@@ -21,7 +20,6 @@ instance.interceptors.response.use(function (response) {
 	return response;
 }, function (error) {
 	console.log(error)
-	window.href = 'http://localhost:8080/';
 	return Promise.reject(error);
 });
 

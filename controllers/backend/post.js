@@ -105,7 +105,7 @@ exports.store = function(req, res, next){
 
 	var title = req.body.title && validator.trim(req.body.title);	
 	var slug = req.body.slug && validator.trim(req.body.slug);	
-	var summary = req.body.description && validator.trim(req.body.summary);	
+	var summary = req.body.summary && validator.trim(req.body.summary);	
 	var content = req.body.content && validator.trim(req.body.content);	
 	var content_raw = req.body.content_raw && validator.trim(req.body.content_raw);	
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
@@ -115,6 +115,8 @@ exports.store = function(req, res, next){
 	var status = req.body.status && validator.trim(req.body.status);
 	var author = req.body.author && validator.trim(req.body.author);
 	var cover_image = req.body.cover_image && validator.trim(req.body.cover_image);
+	var project_link = req.body.project_link && validator.trim(req.body.project_link);
+	var attachment = req.body.attachment && validator.trim(req.body.attachment);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -170,7 +172,9 @@ exports.store = function(req, res, next){
 			category: category,
 			user: user,
 			author: author,		
-			cover_image: cover_image,		
+			cover_image: cover_image,
+			project_link: project_link,	
+			attachment: attachment,		
 			tags: tags,
 			status: status,
 			is_hidden: is_hidden,
@@ -258,7 +262,7 @@ exports.update = function(req, res, next){
 	}
 	var title = req.body.title && validator.trim(req.body.title);	
 	var slug = req.body.slug && validator.trim(req.body.slug);	
-	var summary = req.body.description && validator.trim(req.body.summary);		
+	var summary = req.body.summary && validator.trim(req.body.summary);		
 	var content = req.body.content && validator.trim(req.body.content);	
 	var content_raw = req.body.content_raw && validator.trim(req.body.content_raw);		
 	var is_markdown = req.body.is_markdown && Boolean(req.body.is_markdown) || false;	
@@ -268,6 +272,8 @@ exports.update = function(req, res, next){
 	var status = req.body.status && validator.trim(req.body.status);
 	var author = req.body.author && validator.trim(req.body.author);
 	var cover_image = req.body.cover_image && validator.trim(req.body.cover_image);
+	var project_link = req.body.project_link && validator.trim(req.body.project_link);
+	var attachment = req.body.attachment && validator.trim(req.body.attachment);
 	var is_hidden = req.body.is_hidden && Boolean(req.body.is_hidden) || false;	
 	var allow_comment = req.body.allow_comment && Boolean(req.body.allow_comment) || true;	
 	var allow_feed = req.body.allow_feed && Boolean(req.body.allow_feed) || true;	
@@ -303,36 +309,49 @@ exports.update = function(req, res, next){
 		content = md.render(content_raw);		
 	}
 
-	slug = slug ? slug : str_slug(title);	
+	slug = slug ? slug : str_slug(title);
 
-	PostModel.findOneAndUpdate({_id: id}, {
-		title:title,		
-		slug: slug,
-		summary: summary,
-		content: content,
-		content_raw: content_raw,
-		category: category,
-		user: user,
-		author: author || user.nickname || user.name || '',	
-		cover_image: cover_image,	
-		tags: tags,
-		status: status,
-		is_hidden: is_hidden,
-		is_markdown: is_markdown,
-		allow_comment: allow_comment,
-		allow_feed: allow_feed
-	},function(err, post){
-		if(err){
+	PostModel.findById(id ,function(err, post){
+		if(err || ! post){
 			return res.json({
 				success: false,
-				msg: '更新失败'
+				msg: '更新的对象不存在'
 			});
 		}
-		return res.json({
-			success: true,
-			msg: '更新成功',
-			post: post
+
+		post.title=title;	
+		post.slug=slug;
+		post.summary=summary;
+		post.content=content;
+		post.content_raw=content_raw;
+		post.category=category;
+		post.user=user;
+		post.author=author || user.nickname || user.name || '';	
+		post.cover_image=cover_image;
+		post.project_link=project_link;	
+		post.attachment= attachment;
+		post.tags=tags;
+		post.status=status;
+		post.is_hidden=is_hidden;
+		post.is_markdown=is_markdown;
+		post.allow_comment=allow_comment;
+		post.allow_feed=allow_feed;
+		post.updated_at= Date.now();
+
+		post.save(function(err, post){
+			if(err || ! post){
+				return res.json({
+					success: false,
+					msg: '更新失败'
+				});
+			}			
+			return res.json({
+				success: true,
+				msg: '更新成功',
+				post: post
+			});
 		});
+
 	});	
 	
 }

@@ -1,5 +1,6 @@
 node_modules
 npm-debug.log
 seeder/seeder.lock
-logs
+logs/cheese.log
 public/upload
+public/admin

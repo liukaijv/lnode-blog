@@ -1,5 +1,3 @@
-var config = require('./config');
-
 // app
 var express = require('express');
 var path = require('path');
@@ -13,13 +11,16 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var swig = require('swig');
 var cors = require('cors');
+var history = require('connect-history-api-fallback');
 
 var config   = require('./config');
 var routes = require('./routes/index');
-var api = require('./routes/backend');
+var api = require('./routes/api');
+var backend = require('./routes/backend');
 
 var app = express();
 
+swig.setFilter('sub_str',require('./common/swig_filters').sub_str);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', swig.renderFile);
@@ -44,8 +45,11 @@ app.use(session({
     store: new MongoStore({ url: config.db})
 }));
 
-app.use('/', routes);
-app.use('/api', cors(), api);
+// app.use('/', routes);
+app.use('/api', cors() ,api);
+app.use('/backend', cors(), backend);
+
+// app.use(history());
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

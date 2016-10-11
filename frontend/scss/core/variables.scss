@@ -1,0 +1,34 @@
+// base
+$ns: lb-;
+$baseFontSize: 16px;
+$baseLineHeight: 1.6;
+$baseFontFamily: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+
+// colors
+$colorDefault: #333;
+$colorPrimary: #ff9800;
+$colorSecondary: #fea356;
+
+$colorBlack: #000;
+$colorWhite: #fff;
+$colorGray: #878787;
+
+$colorLink: #4078c0;
+$colorLinkActive: $colorLink;
+
+// background colors
+$bgColorDefault: #fff;
+$bgColorPrimary: $bgColorDefault;
+$bgColorSecondary: $bgColorDefault;
+$bgColorActive: #fafafa;
+
+// border
+$borderColorDefault: #e5e5e5;
+$borderColorPrimary: #e0e0e0;
+$borderColorSecondary: #e7e7e7;
+$borderRadius: 2px;
+
+// base gap size
+$gapSize: 20px;
+$gapSizeLg: 25px;
+$gapSizeSm: 15px;

@@ -7,8 +7,10 @@ import {
 	POST_UPDATE,
 	POST_DELETE,
 	POST_UPLOAD_COVER,
-	POST_CANCEL_COVER,
-	POST_EDITOR
+	POST_DELETE_COVER,
+	POST_EDITOR,
+	POST_UPLOAD_ATTACHMENT,
+	POST_DELETE_ATTACHMENT,
 } from '../mutation-types';
 
 import http from '../../api/http';
@@ -106,10 +108,24 @@ export const uploadCoverAction = function(store, files){
     }
 }
 
-export const cancelCoverAction = function(store, files){	
-    store.dispatch(POST_CANCEL_COVER);
+export const deleteCoverAction = function(store, file){	
+    store.dispatch(POST_DELETE_COVER);
 }
 
 export const editorAction = function(store, text){	
     store.dispatch(POST_EDITOR, text);
+}
+
+export const uploadAttachmentAction = function(store, files){	
+	if (files.length > 0) {        
+        uploadAction(files[0]).then(function(result){
+        	store.dispatch(POST_UPLOAD_ATTACHMENT, result.url);
+        });         
+    } else {  
+        store.dispatch('ALERT', {type: 'danger', msg: '没有选择文件'});
+    }
+}
+
+export const deleteAttachmentAction = function(store, file){	
+    store.dispatch(POST_DELETE_ATTACHMENT);
 }

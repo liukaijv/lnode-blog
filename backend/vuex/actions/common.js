@@ -6,7 +6,8 @@ export const pageAction = function(store, module, page){
 	store.dispatch('PAGE_CHANGE', module, page);		
 }
 
-export const uploadAction = function(file, options = {url:'api/upload'}){
+export const uploadAction = function(file, options = {}){    
+    options = Object.assign({}, {url: 'api/upload'}, options);
 	let form = new FormData(),
 	xhr = new XMLHttpRequest();
 	try {

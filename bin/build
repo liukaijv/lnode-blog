@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+require('shelljs/global');
+
+var webpack = require('webpack');
+var conf = require('../backend/webpack.config');
+
+rm('-rf', 'public/admin');
+
+webpack(conf, function(err, stats) {
+  if (err) throw err
+  process.stdout.write(stats.toString({
+    colors: true,
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false
+  }) + '\n')
+});

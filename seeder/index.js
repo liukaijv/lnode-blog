@@ -77,7 +77,7 @@ ep_db.all('exist', 'droped', function(){
 				var created_at = moment().subtract(Math.floor(Math.random()*tags_len), 'months')						
 				Post.create({
 					title: item.title,
-					content: item.content,
+					content_raw: item.content,
 					user: user,
 					author: user.nickname || user.name || '',
 					category: category,
@@ -110,17 +110,10 @@ ep_db.all('exist', 'droped', function(){
 	});
 
 	// user
-	bcrypt.hash('demo', 10, function(err, hash){	
-		User.create([
+	bcrypt.hash('admin', 10, function(err, hash){	
+		User.create([		
 		{
-			name:'demo',
-			password: hash,
-			email: 'demo@qq.com',
-			nickname: 'noop',
-			group:'administrator'
-		},
-		{
-			name:'noop',
+			name:'admin',
 			password: hash,
 			email: '89016230@qq.com',
 			nickname: 'noop',

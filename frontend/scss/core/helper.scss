@@ -1,0 +1,56 @@
+.hide, .hidden {
+  display: none;
+}
+
+.show, .block {
+  display: block;
+}
+
+.clearfix {
+  @include clearfix();
+}
+
+.clear {
+  height: 0;
+  overflow: hidden;
+  clear: both;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.circle {
+  border-radius: 50%;
+}

@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
-var relationship = require("mongoose-relationship");
+var relationship = require('./relationship');
+var updatedAt = require('./plugins').updatedAt;
 
 var PostSchema = new Schema({
   title:  String,
@@ -10,8 +11,9 @@ var PostSchema = new Schema({
   content: String,
   content_raw: String,
   cover_image: String,
-  attachment: {type: ObjectId, ref: 'Attachment'},
-  category: {type: ObjectId, ref: 'Category'}, 
+  project_link: String,
+  attachment: String,
+  category: {type: ObjectId, ref: 'Category', childPath: 'posts'}, 
   user: {type: ObjectId, ref:'User'},
   tags: [{type: ObjectId, ref: 'Tag', childPath: 'posts'}], 
   author: String,
@@ -27,5 +29,7 @@ var PostSchema = new Schema({
   updated_at: {type: Date, default: Date.now }
 });
 
-PostSchema.plugin(relationship, {relationshipPathName: 'tags'})
-mongoose.model('Post',PostSchema)
+PostSchema.plugin(relationship, { relationshipPathName:'category'});
+PostSchema.plugin(relationship, {relationshipPathName: 'tags'});
+PostSchema.plugin(updatedAt);
+mongoose.model('Post',PostSchema);

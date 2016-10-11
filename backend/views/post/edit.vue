@@ -15,9 +15,9 @@
 								<div class="form-group">									
 									<input type="text" placeholder="标题" class="form-control" v-model="entity.title">
 								</div>									
-								<!-- <div class="form-group">									
+								<div class="form-group">									
 									<textarea class="form-control"  placeholder="摘要" v-model="entity.summary"></textarea>	
-								</div>	 -->							
+								</div>								
 								<Simplemde :text="entity.content_raw" :action="editorAction"></Simplemde>
 							</div>
 							<div class="col-md-3">	
@@ -40,8 +40,21 @@
 									<input type="text" placeholder="作者" class="form-control" v-model="entity.author">
 								</div>								
 								<div class="form-group">									
-									<upload :action="uploadCoverAction"></upload>
-									<img :src="entity.cover_image" width="80" v-if="entity.cover_image" @click="cancelCoverAction">
+									<upload :action="uploadCoverAction" :text="entity.cover_image?'重新上传封面':'上传封面'"></upload>
+									<span v-if="entity.cover_image">
+										<img :src="entity.cover_image" width="80" title="点击删除">
+										<span @click="deleteCoverAction"><i class="fa fa-remove"></i>删除图片</span>
+									</span>
+								</div>
+								<div class="form-group">									
+									<input type="text" placeholder="项目地址" class="form-control" v-model="entity.project_link">
+								</div>	
+								<div class="form-group">									
+									<upload :action="uploadAttachmentAction" :text="entity.attachment?'重新上传附件':'上传附件'"></upload>
+									<span title="点击删除" v-if="entity.attachment" @click="deleteAttachmentAction">
+										{{entity.attachment | sub_str 20}}
+										<i class="fa fa-remove"></i>删除附件
+									</span>								
 								</div>
 								<div class="checkbox">
 									<label>
@@ -54,7 +67,7 @@
 										<input type="checkbox" v-model="entity.is_markdown"> 是否为markdown
 									</label>
 								</div> -->
-							</div>						
+							</div>				
 						</div>
 						<div class="box-footer clearfix">
 							<button class="btn btn-primary" type="button" @click="storeData">提交</button>
@@ -68,7 +81,15 @@
 
 <script>
 
-	import {editAction, updateAction, uploadCoverAction, cancelCoverAction, editorAction} from '../../vuex/actions/post';
+	import {
+		editAction, 
+		updateAction, 
+		uploadCoverAction, 
+		deleteCoverAction, 
+		editorAction,
+		uploadAttachmentAction,
+		deleteAttachmentAction
+	} from '../../vuex/actions/post';
 	import Simplemde from '../../components/simplemde';
 	import Upload from '../../components/upload';
 
@@ -81,8 +102,10 @@
 				editAction,
 				updateAction,
 				uploadCoverAction,
-				cancelCoverAction,
-				editorAction					
+				deleteCoverAction,
+				editorAction,
+				uploadAttachmentAction,
+				deleteAttachmentAction					
 			},
 			getters: {							
 				entity: ({post}) => post.entity,			

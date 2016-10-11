@@ -227,7 +227,7 @@ exports.update = function(req, res, next){
 				msg: '更新失败',
 				err: err
 			});
-		}
+		}		
 		return res.json({
 			success: true,
 			msg: '更新成功',

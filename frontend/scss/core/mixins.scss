@@ -1,0 +1,207 @@
+//strip unit for sass
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+%clearfix {
+  @include clearfix();
+}
+
+@mixin table-row($spacing:0) {
+  display: table;
+  border-spacing: $spacing;
+  width: 100%;
+  table-layout: fixed;
+  & > * {
+    display: table-cell;
+    width: 1%;
+  }
+}
+
+%table-row {
+  @include table-row();
+}
+
+// auto break line
+@mixin hyphens($mode: auto) {
+  word-wrap: break-word;
+  word-break:break-all; 
+  -webkit-hyphens: $mode;
+  -moz-hyphens: $mode;
+  -ms-hyphens: $mode;
+  -o-hyphens: $mode;
+  hyphens: $mode;
+}
+
+@mixin no-select() {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@mixin appearance($value: none) {
+  -webkit-appearance: $value;
+  appearance: $value;
+}
+
+@mixin line-clamp($lines, $line-height:1.6, $force:true, $base:14px) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  line-height: $line-height;
+  @if $force {
+    @if unit($line-height) == px {
+      height: $lines * $line-height;
+    } @else {
+      height: $base * $lines * $line-height;
+    }
+  }
+}
+
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transition-property($transition-property) {
+  -webkit-transition-property: $transition-property;
+  transition-property: $transition-property;
+}
+
+@mixin transition-delay($transition-delay) {
+  -webkit-transition-delay: $transition-delay;
+  transition-delay: $transition-delay;
+}
+
+@mixin transition-duration($transition-duration) {
+  -webkit-transition-duration: $transition-duration;
+  transition-duration: $transition-duration;
+}
+
+@mixin transition-transform($transition) {
+  -webkit-transition: -webkit-transform $transition;
+  transition: transform $transition;
+}
+
+@mixin scale($ratio) {
+  -webkit-transform: scale($ratio);
+  transform: scale($ratio);
+}
+
+@mixin translate($x: 0, $y: 0) {
+  -webkit-transform: translate($x, $y);
+  transform: translate($x, $y);
+}
+
+@mixin translateX($x: 0) {
+  -webkit-transform: translateX($x);
+  transform: translateX($x);
+}
+
+@mixin translateY($y: 0) {
+  -webkit-transform: translateY($y);
+  transform: translateY($y);
+}
+
+@mixin skew($x, $y) {
+  -webkit-transform: skew($x, $y);
+  transform: skew($x, $y);
+}
+
+@mixin translate3d($x:0, $y:0, $z:0) {
+  -webkit-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
+}
+
+@mixin rotate($degrees) {
+  -webkit-transform: rotate($degrees);
+  transform: rotate($degrees);
+}
+
+@mixin rotateX($degrees) {
+  -webkit-transform: rotateX($degrees);
+  transform: rotateX($degrees);
+}
+
+@mixin rotateY($degrees) {
+  -webkit-transform: rotateY($degrees);
+  -ms-transform: rotateY($degrees); // IE9+
+  transform: rotateY($degrees);
+}
+
+@mixin perspective($perspective) {
+  -webkit-perspective: $perspective;
+  perspective: $perspective;
+}
+
+@mixin perspective-origin($perspective) {
+  -webkit-perspective-origin: $perspective;
+  perspective-origin: $perspective;
+}
+
+@mixin transform($tramsform) {
+  -webkit-transform: $tramsform;
+  transform: $tramsform;
+}
+
+@mixin transform-origin($origin) {
+  -webkit-transform-origin: $origin;
+  transform-origin: $origin;
+}
+
+@mixin animation($animation) {
+  -webkit-animation: $animation;
+  animation: $animation;
+}
+
+@mixin backface-visibility($visibility: hidden) {
+  -webkit-backface-visibility: $visibility;
+  backface-visibility: $visibility;
+}
+
+// arrow
+@mixin arrow($direction:bottom, $size:6px, $borderColor:#cecece ) {
+  overflow: hidden;
+  content: "";
+  height: 0;
+  width: 0;
+
+  @if $direction == top {
+    border-bottom: $size solid $borderColor;
+    border-left: $size dashed transparent;
+    border-right: $size dashed transparent;
+  } @else if $direction == right {
+    border-left: $size solid $borderColor;
+    border-top: $size dashed transparent;
+    border-bottom: $size dashed transparent;
+  } @else if $direction == bottom {
+    border-top: $size solid $borderColor;
+    border-left: $size dashed transparent;
+    border-right: $size dashed transparent;
+  } @else if $direction == left {
+    border-right: $size solid $borderColor;
+    border-top: $size dashed transparent;
+    border-bottom: $size dashed transparent;
+  }
+}
+
+//caret
+@mixin caret($color:#DDD, $width:6px,$border-width: 2px, $deg: 45deg) {
+  display: inline-block;
+  width: $width;
+  height: $width;
+  border: $color solid;
+  border-width: $border-width $border-width 0 0;
+  @include rotate($deg);
+  min-width: auto;
+}

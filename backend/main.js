@@ -28,6 +28,10 @@ import store from './vuex/store';
 import routeConfig from './routes';
 import App from './app';
 
+const debug = process.env.NODE_ENV !== 'production';
+Vue.config.debug = debug;
+Vue.config.devtools = debug;
+
 let router = new VueRouter();
 routeConfig(router);
 sync(store, router);

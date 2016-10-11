@@ -1,5 +1,6 @@
 var store = require('../common/store');
 
+// 文件上传
 exports.upload = function (req, res, next) {
   var isFileLimit = false;
   req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {

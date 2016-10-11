@@ -5,7 +5,8 @@ var CategorySchema = new Schema({
   name:  String,
   slug: String,
   description: String,
-  parent: {type: Schema.Types.ObjectId, ref: 'Category'},
+  parent: {type: Schema.ObjectId, ref: 'Category'},
+  posts: [{type: Schema.ObjectId, ref: 'Post'}],
   is_nav: { type: Boolean, default: false },
   created_at: {type: Date, default: Date.now } 
 });
