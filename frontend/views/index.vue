@@ -8,7 +8,6 @@
 
 		<pagination :page="page" :total-page="totalPage" :action="getPosts"></pagination>
 
-
 	</div>
 </template>
 

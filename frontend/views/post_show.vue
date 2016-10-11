@@ -1,5 +1,5 @@
 <template>
-	<div class="posts">
+	
 
 		<div class="post">
 			<h2 class="post-title">
@@ -18,7 +18,17 @@
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<div class="gutter" v-if="prev || next">
+			<div v-if="prev">
+				上一篇：<a v-link="{name: 'post_show', params: {slug: prev.slug }}">{{prev.title}}</a>
+			</div>
+
+			<div v-if="next">
+				下一篇：<a v-link="{name: 'post_show', params: {slug: next.slug }}">{{next.title}}</a>
+			</div>
+		</div>
+	
 </template>
 
 <script>
@@ -31,7 +41,10 @@
 		},	
 		data(){
 			return {
-				post: {}				
+				post: {},
+				prev: {},
+				next: {}
+
 			}
 		},
 		watch: {
@@ -45,9 +58,11 @@
 		methods: {
 			getPost(){								
 				this.$http.get('post/' + this.$route.params.slug).then((result)=>{
-					let data = result.data;
+					let data = result.data;				
 					if(data.success){
 						this.post = data.post;						
+						this.prev = data.prev;						
+						this.next = data.next;						
 					}
 				});
 			}

@@ -1,39 +1,5 @@
 import _ from 'lodash';
 
-function trim(str) {
-    return str.replace(/^\s*|\s*$/g, '');
-}
-
-export function each(obj, iterator) {
-
-    var i, key;
-
-    if (obj && typeof obj.length == 'number') {
-        for (i = 0; i < obj.length; i++) {
-            iterator.call(obj[i], obj[i], i);
-        }
-    } else if (isObject(obj)) {
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                iterator.call(obj[key], obj[key], key);
-            }
-        }
-    }
-
-    return obj;
-}
-
-export function when(value, fulfilled, rejected) {
-
-    var promise = Promise.resolve(value);
-
-    if (arguments.length < 2) {
-        return promise;
-    }
-
-    return promise.then(fulfilled, rejected);
-}
-
 export default function (Vue){
     Vue.http.interceptors.push((request, next) => {
 
