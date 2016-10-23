@@ -116,7 +116,7 @@ ep_db.all('exist', 'droped', function(){
 			name:'admin',
 			password: hash,
 			email: '89016230@qq.com',
-			nickname: 'noop',
+			nickname: 'admin',
 			group:'administrator'
 		}
 		],function(err,data){
