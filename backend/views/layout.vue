@@ -24,6 +24,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="/" target="_blank">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li>
                         <a @click="handleLogout">
                             <i class="fa fa-power-off"></i>
                         </a>

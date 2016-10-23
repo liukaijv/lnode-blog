@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+require('shelljs/global');
+
+var webpack = require('webpack');
+var conf = require('../frontend/webpack.config');
+
+rm('-rf', 'public/web');
+rm('-rf', 'views/index.html');
+
+webpack(conf, function(err, stats) {
+	if (err) throw err;
+	process.stdout.write(stats.toString({
+		colors: true,
+		modules: false,
+		children: false,
+		chunks: false,
+		chunkModules: false
+	}) + '\n');
+	cp('-rf', 'public/web/index.html', 'views/index.html');
+});

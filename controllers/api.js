@@ -12,9 +12,9 @@ var PostModel = require('../models').Post;
 var TagModel = require('../models').Tag;
 var CategoryModel = require('../models').Category;
 
-var CategoryService= require('../service/category');
-var PostService= require('../service/post');
-var TagService= require('../service/tag');
+var CategoryService= require('../services/category');
+var PostService= require('../services/post');
+var TagService= require('../services/tag');
 
 // 菜单
 exports.menus = function(req, res, next){
@@ -115,12 +115,16 @@ exports.posts = function(req, res ,next){
 exports.postShow = function(req, res, next){
 
 	var slug = req.params.slug;
+	var referer = req.query.referer;
+
 	if(!slug){
 		return res.json({
 			success: false,
 			msg: '参数不正确'
 		});
 	}
+
+	console.log(referer)
 
 	var ep = new eventproxy();
 	ep.fail(next);
@@ -166,7 +170,9 @@ exports.postShow = function(req, res, next){
 				success: false,
 				msg: '获取文章失败'
 			});
-		}	
+		}
+		post.hits = post.hits + 1;
+		post.save();			
 		ep.emit('post', post)
 	});
 }
@@ -318,9 +324,4 @@ exports.archives = function(req, res, next){
 		ep.emit('getArchive', result);		
 	});	
 	
-}
-
-// rss聚合
-exports.rss = function(req, res, next){
-
 }

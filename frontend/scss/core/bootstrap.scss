@@ -5,81 +5,142 @@ body {
 
 a {
 	text-decoration: none;
-	color: $colorLink;
-	&:hover, &:focus {
+	color: $colorLink;	
+	&:hover{
 		text-decoration: underline;
+	}
+	&:focus{
+		color: $colorLink; 
 	}
 }
 
+.f12{
+	font-size: 12px;
+}
+
 .container{
-	@include clearfix();
+	@include flexbox();
 	width: 80%;
 	max-width: 1210px;
 	margin: 0 auto;
+}
+
+main{
+	@include flex();	
+}
+
+aside{
+	width: 22%;	
+	margin-left: 3%;
+}
+
+footer{
+	border-top: 1px solid $borderColorDefault;
+	.container{
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
 }
 
 header{
 	padding: 20px 0;
 	border-bottom: 1px solid $borderColorDefault;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
 
-main{
-	float: left;
-	width: 75%;
-}
-
-aside{
-	width: 22%;
-	float: right;
-}
-
-footer{
-	border-top: 1px solid $borderColorDefault;
-	.container{
-		padding: 20px 0;
+	.logo{
+		font-size: 24px;	
 	}
-}
 
-.logo{
-	font-size: 24px;
-	float: left;
-	margin-right: 50px;
-}
-
-.menu {
-	ul {
-		float: left;	
-		li{
-			float: left;
-			margin-right: 40px;
-			a{
-				font-size: 16px;	
-				line-height: 40px;			
-				color: $colorDefault;
-				&.active,
-				&:hover{
-					color: $colorLink;
-					text-decoration: none;
+	.menu {
+		@include flex(2);
+		@extend .clearfix;
+		ul {			
+			li{
+				float: left;
+				margin-left: 40px;
+				a{
+					font-size: 16px;	
+					line-height: 40px;			
+					color: $colorDefault;
+					&.active,
+					&:hover{
+						color: $colorLink;
+						text-decoration: none;
+					}
 				}
 			}
 		}
 	}
+
+	.search-form{	
+		@include flexbox();
+		position: relative;
+		border: 1px solid $borderColorDefault;	
+		input,
+		button{		
+			border: none;
+			padding: 4px 6px;		
+		}	
+		input{
+			@include flex();
+		}
+	}
+
+	.toggle-menu{
+		display: none;
+		text-align: right;
+		.menu-icon{
+			display: inline-block;
+			width: 40px;
+			line-height: 40px;		
+		}
+	}
+
 }
 
-.search-form{
-	float: right;
-	position: relative;
-	border: 1px solid $borderColorDefault;	
-	input,
-	button{		
-		border: none;
-		padding: 4px 6px;		
-	}	
+@media all and (max-width: 870px) {
+	.container {
+		width: 100%;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	aside{
+		display: none;
+	}
+	header{
+		padding: 10px 0;	
+		.logo{
+			@include flex(1);
+		}	
+		.menu {  
+			position: absolute;
+			clip: rect(0 0 0 0);
+			max-height: 0;	
+			overflow: hidden;				
+			@include transition(all .8s);	
+			&.opened{
+				position: relative;				
+				max-height: 9999px;
+			}		
+			ul li{
+				float: none;
+				margin: 0;								
+			}
+		}     
+		.search-form{
+			display: none;
+		}
+		.toggle-menu{
+			display: block;		
+		}
+	}
+	
 }
 
 .content{
 	padding-top: 25px;
+	@include flexbox();
+	@include flex();	
 }
 
 .post{
@@ -93,21 +154,29 @@ footer{
 	.post-title{
 		font-size: 24px;
 		font-weight: normal;	
+		color: $colorLink;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.post-meta{
 		font-size: 14px;
 		color: #666;
 		margin-bottom: 15px;
-		a{
-			color: #666;
+		li{
+			display: inline-block;
+		}
+		a,
+		span{
+			color: $colorDefault;
 		}
 	}
 }
 
 .paginate-container{	
 	margin-bottom: 30px;
-	border-top: 1px solid $borderColorDefault;
-	padding-top: 20px;
+	// border-top: 1px solid $borderColorDefault;
+	// padding-top: 20px;
 	.pagination{	
 		font-size: 0;	
 		a{
@@ -193,9 +262,60 @@ footer{
 	h3{
 		font-size: 18px;
 		margin-bottom: 5px;
+		small{
+			color: #666;
+		}
 	}
 }
 
 .gutter{
 	margin-bottom: 20px;
+}
+
+.post-prev,
+.post-next {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.empty-data{
+	height: 300px;
+	text-align: center;
+	position: relative;
+	.empty-content{
+		position: absolute;
+		top: 50%;
+		left: 40%;
+		transform: translate(-50%, -50%);
+	}
+	p{
+		margin: 10px 0;
+		font-size: 18px;
+	}
+}
+
+.loading{
+	background: rgba(0,0,0,.6);
+	border-radius: 4px;
+	padding: 10px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.post-tag{
+	margin-bottom: $gapSize;
+	.tag-item{
+		display: inline-block;
+		margin-left: 10px;
+	}
+}
+
+.post-blockquote{
+	margin-bottom: $gapSize;
+	padding: 0 1em;
+    color: #777;
+    border-left: 0.25em solid $colorLink;
 }

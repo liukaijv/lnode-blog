@@ -1,4 +1,6 @@
-exports.sub_str = function (val, len, prifix) {
+var swig = require('swig');
+
+var sub_str = function (val, len, prifix) {
     var newLength = 0; 
     var newStr = ""; 
     var chineseRegex = /[^\x00-\xff]/g; 
@@ -28,3 +30,7 @@ exports.sub_str = function (val, len, prifix) {
     } 
     return newStr;
 };
+
+swig.setFilter('sub_str', sub_str);
+
+module.exports = swig;

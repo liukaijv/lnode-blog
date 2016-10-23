@@ -3,14 +3,7 @@
 		<h2 class="post-title">
 			<a v-link="{name: 'post_show', params: {slug: post.slug }}">{{post.title}}</a>
 		</h2>
-		<div class="post-meta">
-			<span>{{post.created_at | date_format 'YYYY-MM-DD'}} · </span>	
-			<span v-if="post.category && post.category.slug">
-				<a v-link="{name: 'category_post', params: {slug: post.category.slug }}">{{post.category.name}}</a> · 
-			</span>		
-			<span>{{post.hits}} Views · </span>
-			<span>{{post.comments}} Replies</span>
-		</div>
+		<post-meta :post="post"></post-meta>
 		<div class="post-body">
 			<div class="post-thumbnail"></div>
 			<div class="post-content">
@@ -23,6 +16,9 @@
 <script>
 	export default {
 		props:{
+			referer: {
+				type: String
+			},
 			post: {
 				type: Object,
 				default: ()=>{

@@ -1,13 +1,12 @@
 {
   "name": "lnode-blog",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1", 
   "scripts": {
     "start": "node ./bin/www",
     "seed": "node ./seeder",
     "backend": "cross-env NODE_ENV=development webpack-dev-server --config backend/webpack.config.js --inline --colors --hot --port 8080",
-    "frontend": "cross-env NODE_ENV=development webpack-dev-server --config frontend/webpack.config.js --inline --colors --hot --port 8000",
-    "build": "cross-env NODE_ENV=production node ./bin/build"
+    "frontend": "cross-env NODE_ENV=development webpack-dev-server --config frontend/webpack.config.js --inline --colors --hot --port 8000",    
+    "build": "node ./bin/backend & node ./bin/frontend"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
@@ -17,6 +16,7 @@
     "connect-mongo": "^1.3.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.1",
+    "data2xml": "^1.2.5",
     "debug": "~2.2.0",
     "eventproxy": "^0.3.5",
     "express": "~4.13.4",

@@ -15,11 +15,13 @@ export default function (Vue){
                 key = request.url;
             }
 
-            cached = Vue.cache.get(key);  
+            let no_cache = request.params.no_cache;
+            
+            cached = Vue.cache.get(key); 
 
-            if (cached) {                
+            if (cached && !no_cache) {                
                 // 重写返回数据
-                request.client = function (request) {
+                request.client = function (request) {                    
                     return request.respondWith(cached.body, {ok: true, status:200});
                 };
             }

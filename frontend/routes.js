@@ -25,13 +25,18 @@ export default function routeConfig(router) {
         '/archives': {
           name: 'archives',
           component: (resolve)=>{require(['./views/archives'],resolve)}
+        },
+        '/404': {
+          name: '404',
+          component: (resolve)=>{require(['./views/404'],resolve)}
         }          
     }
   }  
-});
+}); 
 
-  router.redirect({     
-    '/': '/index'      
+  router.redirect({   
+    '*': '/404',   
+    '/': '/index'
   });
 
 }

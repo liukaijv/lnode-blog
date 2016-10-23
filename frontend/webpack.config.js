@@ -9,7 +9,8 @@ var packageInfo = require('../package.json');
 module.exports = {
 	entry: path.resolve(srcPath, 'main.js'),
 	output:{
-		path: '../public',
+		path: 'public/web',
+		publicPath: '/web/',		
 		filename: '[name]-[hash]-bundle.js'
 	},
 	resolve: {
@@ -58,8 +59,7 @@ module.exports = {
 	plugins: [       
 	new ExtractTextPlugin('[name].css'),
 	new HtmlWebpackPlugin({
-		template: path.join(srcPath, 'index.html'),
-		// filename: path.resolve(__dirname, '../public/index.html'),
+		template: path.join(srcPath, 'index.html'),		
 		title: packageInfo.name
 	})
 	],   

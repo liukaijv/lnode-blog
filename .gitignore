@@ -4,3 +4,4 @@ seeder/seeder.lock
 logs/cheese.log
 public/upload
 public/admin
+public/web

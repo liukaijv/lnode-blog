@@ -1,21 +1,12 @@
-<template>
-	<div>
-		<div class="posts">			
-
-			<post v-for="post in posts" :post="post"></post>
-
-		</div>
-
-		<pagination :page="page" :total-page="totalPage" :action="getPostsByCagegory"></pagination>
-
-
-	</div>
+<template>		
+	<template v-if="posts.length">
+		<post v-for="post in posts" :post="post"></post>
+	</template>
+	<empty v-else></empty>
+	<pagination :page="page" :total-page="totalPage" :action="getPosts"></pagination>
 </template>
 
 <script>
-
-	import Pagination from '../components/pagination';
-	import Post from '../components/post_item';		
 
 	export default {	
 		created(){	
@@ -28,17 +19,13 @@
 				totalPage: 1
 			}
 		},
-		components:{
-			Pagination,
-			Post					
-		},
 		watch: {
-			 $route() {
-			 	this.getPostsByCagegory();
-			 }
+			$route() {
+				this.getPostsByCagegory();
+			}
 		},
 		methods: {
-			getPostsByCagegory(page=1){							
+			getPostsByCagegory(page=1){										
 				this.$http.get('category/' + this.$route.params.slug, {params: {page: page}}).then((result)=>{
 					let data = result.data;
 					if(data.success){

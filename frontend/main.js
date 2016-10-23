@@ -9,6 +9,10 @@ Vue.use(VueResource);
 import routeConfig from './routes';
 import App from './app';
 
+//common components
+import registerComponent from './components/registerComponent';
+registerComponent(Vue);
+
 Vue.prototype.$session = window.sessionStorage || {};
 Vue.prototype.$cache = Cache;
 Vue.cache = Cache;
@@ -29,7 +33,7 @@ Vue.http.options.cache = 5;
 Vue.http.options.root = '/api';
 
 let router = new VueRouter({
-	history: false,
+	history: !debug,
 	linkActiveClass: 'active'
 });
 routeConfig(router);

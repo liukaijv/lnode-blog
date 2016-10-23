@@ -1,14 +1,12 @@
-<template>
-	<div>		
-		<blog-header :menus="menus"></blog-header>
-		<div class="container content">
-			<main>
-				<router-view></router-view>
-			</main>	
-			<blog-aside></blog-aside>		
-		</div>
-		<blog-footer></blog-footer>
+<template>	
+	<blog-header :menus="menus"></blog-header>
+	<div class="container content">
+		<main>
+			<router-view></router-view>
+		</main>	
+		<blog-aside></blog-aside>		
 	</div>
+	<blog-footer></blog-footer>	
 </template>
 
 <script>
@@ -19,7 +17,7 @@
 
 	export default {
 
-		ready(){
+		created(){
 			this.getMenus();
 		},
 

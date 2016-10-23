@@ -2,9 +2,9 @@
 	<header>
 		<div class="container">
 			<h1 class="logo">
-				<a v-link="{name: 'index' }">lnode</a>
+				<a v-link="{name: 'index' }">lblog</a>
 			</h1>				
-			<nav class="menu">
+			<nav class="menu" id="nav">
 				<ul>
 					<li v-for="menu in menus">
 						<a v-link="{name: 'category_post', params: {slug: menu.slug }}">{{menu.name}}</a>
@@ -18,6 +18,11 @@
 				<input type="type" placeholder="" v-model="keyword">
 				<button><i class="lb-icon-search"></i></button>
 			</form>
+			<div class="toggle-menu">
+				<a class="menu-icon" id="toggle-nav">
+					<i class="lb-icon-list"></i>
+				</a>
+			</div>
 		</div>
 		
 	</header>
@@ -25,6 +30,11 @@
 
 <script>
 	export default {
+		ready(){
+			document.getElementById('toggle-nav').addEventListener('click', ()=>{				
+				document.getElementById('nav').classList.toggle('opened');
+			});
+		},
 		props: {
 			menus: {
 				required: true,
