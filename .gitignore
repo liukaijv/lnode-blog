@@ -2,5 +2,4 @@ node_modules
 npm-debug.log
 seeder/seeder.lock
 logs/cheese.log
-public/web
 config.js

@@ -33,7 +33,7 @@ Vue.http.options.cache = 5;
 Vue.http.options.root = '/api';
 
 let router = new VueRouter({
-	history: !debug,
+	history: true,
 	linkActiveClass: 'active'
 });
 routeConfig(router);

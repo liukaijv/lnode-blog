@@ -29,8 +29,8 @@ import routeConfig from './routes';
 import App from './app';
 
 const debug = process.env.NODE_ENV !== 'production';
-Vue.config.debug = debug;
-Vue.config.devtools = debug;
+Vue.config.debug = false;
+Vue.config.devtools = false;
 
 let router = new VueRouter();
 routeConfig(router);

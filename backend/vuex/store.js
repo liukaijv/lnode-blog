@@ -110,7 +110,7 @@ const store = new Vuex.Store({
 		file
 	},
 	// strict: debug,
-	plugins
+	// plugins
 });
 
 export default store;

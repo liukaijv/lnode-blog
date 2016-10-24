@@ -73,7 +73,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({}[chunkId]||chunkId) + "-" + "0c70e6eca6b81433706d" + "-bundle.js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({}[chunkId]||chunkId) + "-" + "db8caacd77d3da2946a0" + "-bundle.js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -163,8 +163,8 @@
 	_vue2.default.filter('sub_str', _sub_str2.default);
 
 	var debug = process.env.NODE_ENV !== 'production';
-	_vue2.default.config.debug = debug;
-	_vue2.default.config.devtools = debug;
+	_vue2.default.config.debug = false;
+	_vue2.default.config.devtools = false;
 
 	var router = new _vueRouter2.default();
 	(0, _routes2.default)(router);
@@ -47411,9 +47411,7 @@
 			post: _post2.default,
 			user: _user2.default,
 			file: _file2.default
-		},
-		// strict: debug,
-		plugins: _plugins2.default
+		}
 	});
 
 	exports.default = store;
