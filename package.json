@@ -1,12 +1,18 @@
 {
-  "name": "lnode-blog",
+  "name": "lnode-blog",  
   "version": "0.0.1", 
+  "description": "基于express和vue、vuex的个人博客",
+  "author": "noop",
+  "license": "MIT",
   "scripts": {
     "start": "node ./bin/www",
     "seed": "node ./seeder",
     "backend": "cross-env NODE_ENV=development webpack-dev-server --config backend/webpack.config.js --inline --colors --hot --port 8080",
     "frontend": "cross-env NODE_ENV=development webpack-dev-server --config frontend/webpack.config.js --inline --colors --hot --port 8000",    
     "build": "node ./bin/backend & node ./bin/frontend"
+  },
+  "engines": {
+    "node": "0.12.x"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
