@@ -31,7 +31,7 @@ var config = {
 
   	file_limit: '1MB',
 
-  	// RSS配置
+  	// rss配置
   	rss: {
   		title: 'rss title',
   		link: 'http://localhost:3000',
