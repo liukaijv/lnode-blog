@@ -5,3 +5,4 @@ logs/cheese.log
 public/admin
 public/web
 config.js
+nohup.out
