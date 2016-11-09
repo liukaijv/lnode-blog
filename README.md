@@ -2,6 +2,10 @@
 
 > 基于express和vue、vuex的个人博客
 
+## 线上地址
+
+	[www.onoop.www](http://www.onoop.com/)
+
 ## 安装
 	
 	// 先安装 mongodb
