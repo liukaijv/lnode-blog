@@ -4,7 +4,7 @@
 
 ## 线上地址
 
-	[www.onoop.www](http://www.onoop.com/)
+	[demo](http://www.onoop.com/ "demo")
 
 ## 安装
 	
